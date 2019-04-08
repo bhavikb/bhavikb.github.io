@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Building a microservice architecture"
+title:  "Building Microservices"
 categories: [microservices]
 ---
 
