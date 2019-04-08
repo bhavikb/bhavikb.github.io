@@ -14,7 +14,7 @@ A service is a web server which takes in request and provides a response. The re
 
 ![service layers](/static/img/service_layers.jpg)
 
-A monolithic service can be viewed as a wholesome service responsible for all the tiers. In a micro-service architecture the tier responsibilities is divided among different services which communicates over the network to get the final response to the user.
+A monolithic service can be viewed as a wholesome service responsible for all the tiers. In a micro-service architecture the tier responsibilities is divided among different services which communicates over the network to gets the final response to the user.
 
 **So why move to micro-service architecture?**
 In a large organisation like Amazon it can be very difficult to maintain a monolithic service. Hundreds of developers developing on a single service is a recipe for disaster. A micro-service architecture segregates the responsibilities in its own service and assists ease of development. It is also easier to maintain as the changes in service can be deployed independently.
@@ -30,25 +30,25 @@ Ideally the service owner defines the contract and control the endpoint, timeout
 As a service owner owning the interface, you will need to answer the following questions.
 
 **How do we define values for timeout?**
-Timeout value can directly affect the availability of your service. A host in your production fleet has limited number of open connections. If your service is taking thousands of transactions per seconds, you need to make sure you are freeing up the open connections as soon as possible. High timeout value means the connection is occupied for a longer time, which is dangerous because eventually you'll be exhausting all your connections and will take down your fleet. A low timeout value means you are returning error response to a greater percentage of traffic thus decreasing the availability.
+Timeout value can directly affect the availability of your service. A host in your production fleet has limited number of open connections. If your service is taking thousands of transactions per seconds, you need to make sure you are freeing up the open connections as soon as possible. High timeout value means the connection is occupied for a longer time, which is dangerous because eventually you'll be exhausting all your connections and will take down your fleet. On the other hand a low timeout value means you are returning error response to a greater percentage of traffic thus decreasing the availability.
 
-To select appropriate timeout value for your service needs experimentation and periodic revaluation.
+Selecting appropriate timeout value for your service needs experimentation and periodic revaluation.
 
 **How do we know how many retries we want to do?**
 Before considering retries, check which requests do you want to send again to the server. Retrying invalidated request would unnecessarily increase load to the server. But retries can increase the availability incase the first request timed out and sending it again can yield a response.
 
-Before fixing the number of times you want to retry consider
+Before fixing the number of times you want to retry, consider
 - *The number of retries can amplify the existing issue.* If the service is down due to an issue (say the database service or a dependency is down due to heavy load), you could amplify the issue by sending more traffic to the service.
 - If you have a stack of microservices, say ```ServiceA -> ServiceB -> ServiceC```, check the retry value of ServiceA before deciding retry value of ServiceB. Having a cascade of retries can exponentially increase the traffic to ServiceC incase ServiceC is down.
 
 ### Priming
-Priming addresses the cold start problem where the service takes longer to respond for the first few requests. Priming sends a number of dummy requests to warm up the service and/or service cache to reduce the impact of latency increase on the customer. The priming can be more intelligent if you know the hot transactions are, for your service and you can warmup the cache accordingly.
+Priming addresses the cold start problem where the service takes longer to respond for the first few requests. Priming sends dummy requests to warm up the service and/or service cache to reduce the impact of latency increase on the customer. The priming can be more intelligent if you know what the hot transactions are, for your service and you can warmup the cache accordingly.
 
 ### Health check
-As the title suggests, health checks are used by load balancers to check the health of the service. The load balancer will ping the service periodically and waits for its response. If one of the host does not respond, load balancer can decide to replace the host with the new one. Other health checks vary according to the use case of the services.
+As the title suggests, health checks are used by load balancers to check the health of the service. The load balancer will ping the service periodically and waits for its response. If one of the host does not respond, load balancer can decide to replace the host with the new one. Other health checks vary according to the use case of the service.
 
 ### Protecting one client from other (throttling)
-Disaster happens. Your service is under anvil because of unexpected traffic increase, one of your clients has retry logic and is sending you exponential traffic to your service thus increasing load. In this situation a natural reaction is to block a percentage of traffic from the malicious client. There are different types of [throttling](https://en.wikipedia.org/wiki/Throttling_process_(computing)) you might want to research about.
+Disaster happens! When your service is under anvil by an unexpected increase in traffic from one of your clients, a natural reaction is to block a percentage of traffic from the malicious client. This is called throttling and it protects other clients from unexpected response from your service. There are different types of [throttling](https://en.wikipedia.org/wiki/Throttling_process_(computing)) you might want to research about.
 
 ### Logging
 Logging helps you determine what is happening in runtime. It helps you to handle unexpected responses from database, fix code bugs and maintain the sanity of service. But logging comes with an additional cost. Writing logs to disk is expensive and can quickly fill up your disk space. The generated logs needs to be rotated and sent to a service which maintains it and can be retrieved later.
