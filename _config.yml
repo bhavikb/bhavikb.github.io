@@ -17,15 +17,13 @@ collections:
 
 social:
     - icon: fa-facebook
-      link: "#"
-    - icon: fa-twitter
-      link: "#"
+      link: "https://www.facebook.com/bhavik.shah.395"
     - icon: fa-linkedin
-      link: "#"
+      link: "https://www.linkedin.com/in/bbshah21/"
     - icon: fa-stack-exchange
-      link: "#"
+      link: "https://stackoverflow.com/users/1680256/bhavik-shah"
     - icon: fa-github
-      link: "#"
+      link: "https://github.com/bhavikb"
 
 share:
   twitter_username: github.io
