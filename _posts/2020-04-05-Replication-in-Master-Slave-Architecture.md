@@ -16,3 +16,5 @@ If you need to scale your system by adding new replicas, a downtime is required 
 1. First, you take a snapshot of database and use it to load data in the new follower.
 2. Then the follower requests all the write request that happened after the snapshot was taken. 
 3. The follower is then ready to accept read request and replicate subsequent writes by master.
+
+Reference: Designing Data-Intensive Applications by Martin Kleppmann
