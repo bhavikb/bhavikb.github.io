@@ -1,55 +1,41 @@
-title: Blog
-description: My Personal Blog
-author: Bhavik Shah
-github: https://github.com/bhavikb
-about: I code at Amazon.com
-disqus_shortname:
-google_analytics:
-avatar_url: /static/img/avatar1.jpeg
+# Site settings
+title: Bhavik Shah's Blog 
+description: "A blog for sharing thoughts"
+url: "http://bhavikshah.me/"
+author:
+  name: "Bhavik Shah"
+  email: "bhavikshah@live.in"
+  url: "https://bhavikshah.me"
 
-enableTags: true
-tagarray: []
 
-collections:
-  project:
-    output: true
-    permalink: /project/:path/
-
-social:
-    - icon: fa-facebook
-      link: "https://www.facebook.com/bhavik.shah.395"
-    - icon: fa-linkedin
-      link: "https://www.linkedin.com/in/bbshah21/"
-    - icon: fa-stack-exchange
-      link: "https://stackoverflow.com/users/1680256/bhavik-shah"
-    - icon: fa-github
-      link: "https://github.com/bhavikb"
-
-share:
-  twitter_username: github.io
-  fb_appid: 1749788565247320
-
-urls:
-    - text: About Me
-      url: /about/
-    - text: My Projects
-      url: /projects/
-    - text: XML Feed
-      url: /feed.xml
-
-url: "#"
-baseurl: ""
-paginate: 20
-per_page: 20
-paginate_path: "/page/:num/"
+# Build settings
+baseurl: / # Change this to your relative path (ex: /blog/), or leave just a /
 markdown: kramdown
+#source: .
+destination: ./_site
+permalink: /:title
+paginate: 8
+paginate_path: /page:num/
+
+# Default values
+defaults:
+  -
+    scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"
+
+# Plugins
 gems:
   - jekyll-paginate
-  - jekyll-gist
+  - jekyll-sitemap
 
-compress_html:
-  clippings: all
-  comments: ["<!-- ", " -->"]
-  endings: all
-  ignore:
-    envs: ['development']
+plugins: [jekyll-paginate]
+# Custom variables
+version: "1.0.0"
+
+# Options
+custom_header: false
+custom_nav_footer: false
+reverse: false

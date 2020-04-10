@@ -12,7 +12,7 @@ A service is a web server which takes in request and provides a response. The re
 2. The middle tier -- the service responsible for business logic
 3. The backend -- usually responsible to interact with the database or it can be the database itself.
 
-![service layers](/static/img/service_layers.jpg)
+![service layers](img/service_layers.jpg)
 
 A monolithic service can be viewed as a wholesome service responsible for all the tiers. In a micro-service architecture the tier responsibilities is divided among different services which communicates over the network to gets the final response to the user.
 

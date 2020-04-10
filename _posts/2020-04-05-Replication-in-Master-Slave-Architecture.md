@@ -3,7 +3,11 @@ In a single master and multiple slave architecture
 2. Read requests is redirected to any of the node since all the nodes should have same replica. This increases the scalability of the system for read requests.
 
 #### Synchronous vs Asynchronous
+<<<<<<< HEAD
 <img src="/static/img/replication-master-slave.png" align="middle" height="300" />
+=======
+<img src="img/replication-master-slave.png" align="middle" height="300" />
+>>>>>>> new-theme-master
 
 Above figure shows the various components of the system and interaction between them when a write happens. The client sends a write request to master which updates its own copy. The master then forwards the replication log or data stream to followers for them to update their replica. The figure shows that there is a significant delay in the response of follower 2. There is no guarantee how long it would take for every follower to update it's replica. Hence, although the advantage of synchronous updates guarantee that all the replicas has been updated, it is impractical. The leader will wait for followers to respond and block all the write requests and failure of a single node can bring down the whole system to a halt.
 
