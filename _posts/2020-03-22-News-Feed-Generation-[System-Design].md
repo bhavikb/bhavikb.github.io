@@ -1,3 +1,10 @@
+---
+title: Hello World - TheReviewIndex
+description: The first blog post to introduce TheReviewIndex.
+header: Hello World!
+duration: 1 minute read
+---
+
 The home page of social media platforms generates personalized news feed for users. Two of the most important operations of social media platforms are *post update* ("post a tweet" in case of twitter) and *generate timeline*. I decided to know more about this topic because it is a popular system design interview question to design an social media platform like twitter or instagram. I will discuss the scalability of the system and not the algorithm for new feed generation (see [this post](https://techcrunch.com/2016/09/06/ultimate-guide-to-the-news-feed/) from tech crunch to know about the algorithm).
 
 ### **Post Update**

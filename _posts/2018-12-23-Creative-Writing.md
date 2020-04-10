@@ -1,7 +1,9 @@
 ---
 layout: post
 title:  "Creative Writing"
-categories: [writing]
+description: "A summary of learnings from Creative writing course in Coursera"
+header: Creative Writing
+Duration: 3 minute read
 ---
 
 Completing the creative writing course on Coursera gave me an interesting insight on how writers think. Although my motivation to take the course was to improve my business writing skills,
