@@ -2,16 +2,168 @@
 layout: default
 ---
 <!-- Posts -->
-<ul id="posts">
+<!DOCTYPE html>
+<html lang="en">
 
-	{% for post in paginator.posts %}
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Bhavik Shah</title>
+	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+	<style>
+		* {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+        }
 
-	  <li class="post">
-	  	<h2><a href="{% if site.baseurl == "/" %}{{ post.url }}{% else %}{{ post.url | prepend: site.baseurl }}{% endif %}">{%if post.header %}{{ post.header }}{% else %}{{ post.title }}{% endif %}</a></h2>
-      <time datetime="{{ post.date | date_to_xmlschema }}" class="by-line"> <i>{{ post.date | date_to_string }}</i> </time>
-	  	<p>{{ post.content | strip_html | truncatewords:50 }}</p>
-	  </li>
+        body {
+          font-family: 'Roboto', sans-serif;
+          background-color: var(--bg);
+          color: var(--text);
+          line-height: 1.6;
+          padding: 2rem;
+          max-width: 800px;
+          margin: auto;
+          transition: background-color 0.3s, color 0.3s;
+        }
 
-    {% endfor %}
+        :root {
+          --bg: #f9f9f9;
+          --text: #111;
+        }
 
-</ul>
+        body.dark-mode {
+          --bg: #111;
+          --text: #f9f9f9;
+        }
+
+        header {
+          text-align: center;
+          margin-bottom: 2rem;
+        }
+
+        header h1 {
+          font-size: 2.5rem;
+          font-weight: 700;
+        }
+
+        header p {
+          font-size: 1.2rem;
+          margin-top: 0.5rem;
+        }
+
+        nav {
+          display: flex;
+          justify-content: center;
+          gap: 2rem;
+          margin: 2rem 0;
+        }
+
+        nav a {
+          text-decoration: none;
+          color: inherit;
+          font-weight: 500;
+        }
+
+        #theme-toggle {
+          position: fixed;
+          top: 1rem;
+          right: 1rem;
+          padding: 0.4rem 0.8rem;
+          background: transparent;
+          border: 1px solid var(--text);
+          border-radius: 5px;
+          cursor: pointer;
+          font-family: inherit;
+        }
+
+        section {
+          margin-bottom: 3rem;
+        }
+
+        h2 {
+          font-size: 1.6rem;
+          margin-bottom: 1rem;
+          font-weight: 700;
+        }
+
+        .post {
+          margin-bottom: 1.5rem;
+        }
+
+        .post-date {
+          font-size: 0.9rem;
+          color: #666;
+        }
+
+        .post-title {
+          font-size: 1.2rem;
+          color: #b00000;
+          font-weight: 500;
+          text-decoration: none;
+        }
+
+        #post-content {
+          margin-top: 2rem;
+        }
+
+        footer {
+          text-align: center;
+          margin-top: 4rem;
+          font-size: 0.9rem;
+          color: #888;
+        }
+	</style>
+</head>
+
+<body>
+<button id="theme-toggle">Toggle Dark Mode</button>
+<header>
+	<h1>Bhavik Shah</h1>
+	<p>I'm a software developer and writer</p>
+</header>
+
+<nav>
+	<a href="#">Home</a>
+	<a href="#about">About</a>
+	<a href="#blog">Blog</a>
+</nav>
+
+<section id="about">
+	<h2>About</h2>
+	<p>I'm <strong>Bhavik Shah</strong>, a software developer and writer passionate about web technologies, open source, and programming languages.</p>
+</section>
+
+<section id="blog">
+	<h2>Recent Posts</h2>
+	<ul id="posts">
+		{% for post in paginator.posts %}
+		{% assign post_url = post.url | prepend: site.baseurl %}
+		{% assign post_title = post.header | default: post.title %}
+		<li class="post">
+			<h2><a href="{{ post_url }}">{{ post_title }}</a></h2>
+			<time datetime="{{ post.date | date_to_xmlschema }}" class="by-line">
+				<i>{{ post.date | date_to_string }}</i>
+			</time>
+			<p>{{ post.content | strip_html | truncatewords:50 }}</p>
+		</li>
+		{% endfor %}
+	</ul>
+	<div id="post-content"></div>
+</section>
+
+<footer>
+	&copy; 2025 Bhavik Shah. All rights reserved.
+</footer>
+
+<script>
+	const toggle = document.getElementById('theme-toggle');
+    toggle.addEventListener('click', () => {
+      document.body.classList.toggle('dark-mode');
+    });
+</script>
+</body>
+
+</html>
+
