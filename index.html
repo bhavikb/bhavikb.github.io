@@ -4,47 +4,81 @@
   <meta charset="UTF-8">
   <title>Bhavik Shah</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Bhavik Shah - Senior Software Engineer specializing in high-scale distributed systems, ML systems, and privacy-preserving analytics.">
   <style>
+    :root {
+      --bg: #0d1117;
+      --fg: #c9d1d9;
+      --accent: #58a6ff;
+      --muted: #8b949e;
+      --panel: #161b22;
+    }
     html {
       font-family: 'Courier New', monospace;
-      background-color: #0d1117;
-      color: #c9d1d9;
+      background-color: var(--bg);
+      color: var(--fg);
       padding: 2rem;
     }
     body {
-      max-width: 700px;
+      max-width: 720px;
       margin: auto;
+      animation: fadeIn 0.8s ease-in-out;
+    }
+    h1, h2 {
+      background: linear-gradient(90deg, var(--accent), #9ecbff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
     h1 {
-      color: #58a6ff;
+      font-size: 2.2rem;
+      margin-bottom: 0.2rem;
+    }
+    h2 {
+      font-size: 1.3rem;
+      margin-bottom: 0.4rem;
     }
     a {
-      color: #8b949e;
+      color: var(--muted);
       text-decoration: none;
+      transition: color 0.2s, text-shadow 0.2s;
     }
     a:hover {
-      color: #58a6ff;
+      color: var(--accent);
+      text-shadow: 0 0 6px rgba(88,166,255,0.6);
     }
     .links {
       margin-top: 1rem;
     }
     .links a {
-      display: block;
-      margin-bottom: 0.5rem;
+      display: inline-flex;
+      align-items: center;
+      margin-right: 1.2rem;
+      font-size: 0.95rem;
+    }
+    .links svg {
+      width: 20px;
+      height: 20px;
+      fill: var(--muted);
+      margin-right: 6px;
+      transition: fill 0.2s;
+    }
+    .links a:hover svg {
+      fill: var(--accent);
     }
     .terminal-box {
-      background-color: #161b22;
+      background-color: var(--panel);
       padding: 1rem;
       border-radius: 8px;
       margin-top: 2rem;
-      box-shadow: 0 0 10px #0d1117;
+      box-shadow: 0 0 15px rgba(0,0,0,0.3);
       min-height: 60px;
       white-space: pre-wrap;
+      line-height: 1.5;
     }
     .cursor {
       display: inline-block;
       width: 10px;
-      background-color: #c9d1d9;
+      background-color: var(--fg);
       margin-left: 2px;
       animation: blink 1s steps(2, start) infinite;
     }
@@ -53,58 +87,124 @@
       50% { opacity: 0; }
     }
     .section {
-      margin-top: 2rem;
+      margin-top: 2.2rem;
+      line-height: 1.6;
     }
-    .section h2 {
-      color: #58a6ff;
-      font-size: 1.2rem;
-      margin-bottom: 0.5rem;
+    .stack {
+      background: var(--panel);
+      padding: 0.6rem 0.8rem;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      color: var(--accent);
+      display: inline-block;
+    }
+    footer {
+      margin-top: 2rem;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
 <body>
 
-  <h1>Bhavik Shah</h1>
-  <p>Senior Software Engineer • Data Infra & ML Systems • Bay Area</p>
+  <header>
+    <h1>Bhavik Shah</h1>
+    <p>Senior Software Engineer • Data Infra &amp; ML Systems • Bay Area</p>
+  </header>
 
-  <div class="links">
-    <a href="https://github.com/bhavikb" target="_blank">GitHub</a>
-    <a href="https://www.linkedin.com/in/bbshah21/" target="_blank">LinkedIn</a>
-    <a href="mailto:bhavikshah@live.in">Email Me</a>
-    <a href="resume.pdf" download target="_blank">Download Résumé</a>
-  </div>
+  <nav class="links" aria-label="Main navigation">
+    <a href="https://github.com/bhavikb" target="_blank" rel="noopener">
+      <!-- GitHub SVG -->
+      <svg viewBox="0 0 16 16" aria-hidden="true">
+        <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.73 0 8.33c0 3.68 2.29 6.8 5.47 7.9.4.08.55-.18.55-.39
+        0-.19-.01-.82-.01-1.49-2.01.38-2.53-.5-2.69-.96-.09-.23-.48-.96-.82-1.15-.28-.15-.68-.52
+        -.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.53.28-.87.51-1.07-1.78-.21
+        -3.64-.91-3.64-4.03 0-.89.31-1.62.82-2.19-.08-.21-.36-1.07.08-2.23 0 0 .67-.22
+        2.2.82a7.53 7.53 0 0 1 2-.28c.68 0 1.36.09 2 .28 1.53-1.04 2.2-.82
+        2.2-.82.44 1.16.16 2.02.08 2.23.51.57.82 1.3.82 2.19 0 3.13-1.87
+        3.82-3.65 4.03.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.47.55.39
+        A8.34 8.34 0 0 0 16 8.33C16 3.73 12.42 0 8 0z"/>
+      </svg>
+      GitHub
+    </a>
+    <a href="https://www.linkedin.com/in/bbshah21/" target="_blank" rel="noopener">
+      <!-- LinkedIn SVG -->
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M20.447 20.452H17.21V14.84c0-1.338-.024-3.064-1.868-3.064-1.87 0-2.156 
+        1.46-2.156 2.966v5.71H9.046V9h3.104v1.561h.045c.433-.82 1.494-1.684 3.073-1.684 
+        3.29 0 3.896 2.164 3.896 4.977v6.598zM5.337 7.433c-.993 
+        0-1.8-.807-1.8-1.8 0-.994.807-1.8 1.8-1.8.994 0 1.8.806 
+        1.8 1.8 0 .993-.806 1.8-1.8 1.8zM6.794 20.452H3.88V9h2.914v11.452zM22.225 
+        0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 
+        24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 
+        .774 23.2 0 22.222 0h.003z"/>
+      </svg>
+      LinkedIn
+    </a>
+    <a href="mailto:bhavikshah@live.in">Email</a>
+    <a href="resume.pdf" download target="_blank" rel="noopener">Résumé</a>
+  </nav>
 
-  <div class="terminal-box">
+  <section class="terminal-box" aria-label="Current work status">
     <strong>~/now</strong><br>
     <span id="typed-text"></span><span class="cursor"></span>
-  </div>
+  </section>
 
-  <div class="section">
+  <section class="section">
     <h2>About</h2>
     <p>Engineer focused on high-scale distributed systems, privacy-preserving analytics, and curious explorations in AI. Currently at LinkedIn. Previously at AWS and Amazon.</p>
-  </div>
+  </section>
 
-  <div class="section">
+  <section class="section">
     <h2>Stack</h2>
-    <p>Apache Samza · Kafka · Spark · Java · Go · Scala · SQL</p>
-  </div>
+    <div class="stack">Apache Samza · Kafka · Spark · Java · Go · Scala · SQL</div>
+  </section>
 
-  <p style="margin-top: 2rem; font-size: 0.9rem;">© 2025 Bhavik Shah</p>
+  <footer>
+    © 2025 Bhavik Shah
+  </footer>
 
   <script>
-    const text = "Exploring AI agents, building for babies, and shipping quiet things.";
-    const typedText = document.getElementById("typed-text");
-    let idx = 0;
+    const statuses = [
+      "Exploring AI agents, building for babies, and shipping quiet things.",
+      "Optimizing distributed pipelines — one bottleneck at a time.",
+      "Reading about privacy-preserving ML while my coffee cools.",
+      "Designing resilient systems that (hopefully) never wake me up at night.",
+      "Tinkering with data infra and side projects in the dark hours."
+    ];
 
-    function type() {
-      if (idx < text.length) {
-        typedText.textContent += text.charAt(idx);
-        idx++;
-        setTimeout(type, 40);
+    const typedText = document.getElementById("typed-text");
+    let statusIndex = 0;
+    let charIndex = 0;
+    let deleting = false;
+
+    function typeLoop() {
+      const currentText = statuses[statusIndex];
+
+      if (!deleting) {
+        typedText.textContent = currentText.substring(0, charIndex + 1);
+        charIndex++;
+        if (charIndex === currentText.length) {
+          setTimeout(() => deleting = true, 1500);
+        }
+      } else {
+        typedText.textContent = currentText.substring(0, charIndex - 1);
+        charIndex--;
+        if (charIndex === 0) {
+          deleting = false;
+          statusIndex = (statusIndex + 1) % statuses.length;
+        }
       }
+
+      setTimeout(typeLoop, deleting ? 30 : 45);
     }
 
-    window.onload = type;
+    window.onload = typeLoop;
   </script>
+
 </body>
 </html>
