@@ -1,7 +1,7 @@
 ---
 title:  "Performance of lists in Java"
-description: "Comparing performances of different list data structures in Java"
-categories: [Java8, JavaCollections]
+date: "2019-05-12"
+excerpt: "Comparing performances of different list data structures in Java"
 ---
 # Introduction
 In this post I will compare performances of 3 commonly used list data structure in java -- Linked List, Array List, Vector.
