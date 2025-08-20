@@ -1,7 +1,7 @@
 ---
-layout: post
 title:  "The Startup Of You"
-categories: [books]
+date: "2019-08-09"
+excerpt: "Learning from The Startup Of You"
 ---
 
 The book by Reid Hoffman gives an interesting prespective to plan your career. Reid is the cofounder of LinkedIn and Paypal.
