@@ -1,7 +1,7 @@
 ---
-layout: post
 title:  "Building Microservices"
-categories: [microservices]
+date: "2019-03-25"
+excerpt: "why move to micro-service architecture?"
 ---
 
 *Note: These opinion are solely mine and not Amazon's*
