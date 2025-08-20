@@ -1,116 +1,554 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Bhavik Shah</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Font Awesome Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-  <style>
-    html {
-      font-family: 'Courier New', monospace;
-      background-color: #0d1117;
-      color: #c9d1d9;
-      padding: 2rem;
-    }
-    body {
-      max-width: 700px;
-      margin: auto;
-    }
-    h1 {
-      color: #58a6ff;
-    }
-    a {
-      color: #8b949e;
-      text-decoration: none;
-      transition: color 0.2s ease, transform 0.2s ease;
-    }
-    a:hover {
-      color: #58a6ff;
-      transform: translateX(2px);
-    }
-    .links {
-      margin-top: 1rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.6rem;
-    }
-    .links a i {
-      margin-right: 0.5rem;
-    }
-    .terminal-box {
-      background-color: #161b22;
-      padding: 1rem;
-      border-radius: 8px;
-      margin-top: 2rem;
-      box-shadow: 0 0 10px #0d1117;
-      min-height: 60px;
-      white-space: pre-wrap;
-    }
-    .cursor {
-      display: inline-block;
-      width: 10px;
-      background-color: #c9d1d9;
-      margin-left: 2px;
-      animation: blink 1s steps(2, start) infinite;
-    }
-    @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0; }
-    }
-    .section {
-      margin-top: 2rem;
-    }
-    .section h2 {
-      color: #58a6ff;
-      font-size: 1.2rem;
-      margin-bottom: 0.5rem;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>$ whoami | grep Bhavik</title>
+    <style>
+        :root {
+            --bg: #0d1117;
+            --fg: #c9d1d9;
+            --border: #30363d;
+            --accent: #58a6ff;
+            --muted: #8b949e;
+            --green: #7c3aed;
+            --orange: #f85149;
+            --yellow: #d29922;
+        }
+
+        @media (prefers-color-scheme: light) {
+            :root {
+                --bg: #ffffff;
+                --fg: #24292f;
+                --border: #d0d7de;
+                --accent: #0969da;
+                --muted: #656d76;
+                --green: #7c3aed;
+                --orange: #cf222e;
+                --yellow: #9a6700;
+            }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', 'Courier New', monospace;
+            background: var(--bg);
+            color: var(--fg);
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        .terminal {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+            min-height: 100vh;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .prompt {
+            color: var(--green);
+            font-weight: 600;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--accent);
+            text-decoration: none;
+            font-size: 13px;
+            transition: color 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--fg);
+        }
+
+        .nav-links a:before {
+            content: '$ ';
+            color: var(--muted);
+        }
+
+        .header {
+            margin-bottom: 2rem;
+        }
+
+        .ascii-art {
+            font-size: 10px;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            white-space: pre;
+            font-family: monospace;
+            line-height: 1;
+        }
+
+        .command {
+            color: var(--green);
+            margin-bottom: 0.5rem;
+        }
+
+        .output {
+            margin-left: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .info-line {
+            display: flex;
+            margin-bottom: 0.3rem;
+        }
+
+        .label {
+            color: var(--yellow);
+            min-width: 120px;
+        }
+
+        .value {
+            color: var(--fg);
+        }
+
+        .code-block {
+            background: rgba(110, 118, 129, 0.1);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 1rem;
+            margin: 1rem 0;
+            overflow-x: auto;
+        }
+
+        .tech-stack .value {
+            color: var(--accent);
+        }
+
+        .section {
+            margin-bottom: 2.5rem;
+        }
+
+        .blog-section {
+            margin-top: 2rem;
+        }
+
+        .blog-loading {
+            color: var(--muted);
+            font-style: italic;
+        }
+
+        .blog-post {
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            background: rgba(110, 118, 129, 0.05);
+            transition: border-color 0.2s ease;
+        }
+
+        .blog-post:hover {
+            border-color: var(--accent);
+        }
+
+        .blog-title {
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+        }
+
+        .blog-meta {
+            color: var(--muted);
+            font-size: 12px;
+            margin-bottom: 0.5rem;
+        }
+
+        .blog-excerpt {
+            color: var(--fg);
+            font-size: 13px;
+        }
+
+        .blog-content {
+            display: none;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .blog-content.expanded {
+            display: block;
+        }
+
+        .blog-content h1,
+        .blog-content h2,
+        .blog-content h3 {
+            color: var(--accent);
+            margin: 1rem 0 0.5rem 0;
+        }
+
+        .blog-content p {
+            margin-bottom: 1rem;
+        }
+
+        .blog-content code {
+            background: rgba(110, 118, 129, 0.2);
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-size: 12px;
+        }
+
+        .blog-content pre {
+            background: rgba(110, 118, 129, 0.1);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 1rem;
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+
+        .error {
+            color: var(--orange);
+        }
+
+        .cursor {
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        .typewriter {
+            overflow: hidden;
+            white-space: nowrap;
+            animation: typing 2s steps(30) 1s both;
+        }
+
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        @media (max-width: 768px) {
+            .terminal {
+                padding: 1rem;
+            }
+            
+            .nav {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+            
+            .ascii-art {
+                font-size: 8px;
+            }
+            
+            .nav-links {
+                gap: 1rem;
+            }
+        }
+    </style>
 </head>
 <body>
+    <div class="terminal">
+        <nav class="nav">
+            <div class="prompt">bhavik@localhost:~$</div>
+            <ul class="nav-links">
+                <li><a href="https://linkedin.com/in/bhavikshah" target="_blank">linkedin</a></li>
+                <li><a href="https://github.com/bhavikshah" target="_blank">github</a></li>
+                <li><a href="./resume.pdf" target="_blank">resume.pdf</a></li>
+            </ul>
+        </nav>
 
-  <h1>Bhavik Shah</h1>
-  <p>Senior Software Engineer • Data Infra & ML Systems • Bay Area</p>
+        <div class="header">
+            <div class="ascii-art">
+ ____  _                 _ _      ____  _           _     
+| __ )| |__   __ ___   _(_) | __ / ___|| |__   __ _| |__  
+|  _ \| '_ \ / _` \ \ / / | |/ / \___ \| '_ \ / _` | '_ \ 
+| |_) | | | | (_| |\ V /| |   <   ___) | | | | (_| | | | |
+|____/|_| |_|\__,_| \_/ |_|_|\_\ |____/|_| |_|\__,_|_| |_|
+            </div>
+            
+            <div class="command">$ cat /etc/passwd | grep bhavik</div>
+            <div class="output">
+                <div class="info-line">
+                    <span class="label">USER:</span>
+                    <span class="value">bhavik</span>
+                </div>
+                <div class="info-line">
+                    <span class="label">ROLE:</span>
+                    <span class="value">Senior Software Engineer</span>
+                </div>
+                <div class="info-line">
+                    <span class="label">COMPANY:</span>
+                    <span class="value">LinkedIn</span>
+                </div>
+                <div class="info-line">
+                    <span class="label">LOCATION:</span>
+                    <span class="value">Bay Area, CA</span>
+                </div>
+                <div class="info-line">
+                    <span class="label">SHELL:</span>
+                    <span class="value">/bin/zsh</span>
+                </div>
+            </div>
+        </div>
 
-  <div class="links">
-    <a href="https://github.com/bhavikb" target="_blank"><i class="fab fa-github"></i>GitHub</a>
-    <a href="https://www.linkedin.com/in/bbshah21/" target="_blank"><i class="fab fa-linkedin"></i>LinkedIn</a>
-    <a href="mailto:bhavikshah@live.in"><i class="fas fa-envelope"></i>Email Me</a>
-    <a href="resume.pdf" download target="_blank"><i class="fas fa-file-alt"></i>Download Résumé</a>
-  </div>
+        <div class="section">
+            <div class="command">$ echo $ABOUT</div>
+            <div class="output">
+                Engineer focused on high-scale distributed systems, privacy-preserving analytics, and curious explorations in AI. Previously architected solutions at AWS and Amazon. Always debugging something interesting.
+            </div>
+        </div>
 
-  <div class="terminal-box">
-    <strong>~/now</strong><br>
-    <span id="typed-text"></span><span class="cursor"></span>
-  </div>
+        <div class="section tech-stack">
+            <div class="command">$ ls -la ~/skills/</div>
+            <div class="output">
+                <div class="info-line">
+                    <span class="label">streaming:</span>
+                    <span class="value">Apache Samza, Kafka, Spark</span>
+                </div>
+                <div class="info-line">
+                    <span class="label">languages:</span>
+                    <span class="value">Java, Go, Scala, SQL, Python</span>
+                </div>
+                <div class="info-line">
+                    <span class="label">systems:</span>
+                    <span class="value">Distributed Systems, ML Infrastructure</span>
+                </div>
+                <div class="info-line">
+                    <span class="label">data:</span>
+                    <span class="value">Privacy-Preserving Analytics, Real-time Processing</span>
+                </div>
+            </div>
+        </div>
 
-  <div class="section">
-    <h2>About</h2>
-    <p>Engineer focused on high-scale distributed systems, privacy-preserving analytics, and curious explorations in AI. Currently at LinkedIn. Previously at AWS and Amazon.</p>
-  </div>
+        <div class="section blog-section">
+            <div class="command">$ find ./_posts -name "*.md" -exec head -n 5 {} \;</div>
+            <div class="output" id="blog-container">
+                <div class="blog-loading">Scanning for markdown files...<span class="cursor">█</span></div>
+            </div>
+        </div>
 
-  <div class="section">
-    <h2>Stack</h2>
-    <p>Apache Samza · Kafka · Spark · Java · Go · Scala · SQL</p>
-  </div>
+        <div class="section">
+            <div class="command">$ uptime</div>
+            <div class="output">
+                © 2025 Bhavik Shah • Last commit: <span id="current-date"></span>
+            </div>
+        </div>
+    </div>
 
-  <p style="margin-top: 2rem; font-size: 0.9rem;">© 2025 Bhavik Shah</p>
+    <script>
+        // Markdown parser (simplified)
+        function parseMarkdown(text) {
+            return text
+                .replace(/^# (.*$)/gim, '<h1>$1</h1>')
+                .replace(/^## (.*$)/gim, '<h2>$1</h2>')
+                .replace(/^### (.*$)/gim, '<h3>$1</h3>')
+                .replace(/^\* (.*$)/gim, '<li>$1</li>')
+                .replace(/^- (.*$)/gim, '<li>$1</li>')
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                .replace(/`(.*?)`/g, '<code>$1</code>')
+                .replace(/```[\s\S]*?```/g, function(match) {
+                    const code = match.replace(/```/g, '').trim();
+                    return `<pre><code>${code}</code></pre>`;
+                })
+                .replace(/\n\n/g, '</p><p>')
+                .replace(/^(.+)$/gm, '<p>$1</p>');
+        }
 
-  <script>
-    const text = "Exploring AI agents, building for babies, and shipping quiet things.";
-    const typedText = document.getElementById("typed-text");
-    let idx = 0;
+        // Extract frontmatter from markdown
+        function extractFrontmatter(content) {
+            const frontmatterRegex = /^---\n([\s\S]*?)\n---\n([\s\S]*)$/;
+            const match = content.match(frontmatterRegex);
+            
+            if (!match) {
+                return { 
+                    frontmatter: {}, 
+                    content: content,
+                    title: 'Untitled',
+                    date: new Date().toISOString().split('T')[0]
+                };
+            }
 
-    function type() {
-      if (idx < text.length) {
-        typedText.textContent += text.charAt(idx);
-        idx++;
-        setTimeout(type, 40);
-      }
-    }
+            const frontmatter = {};
+            const frontmatterText = match[1];
+            const bodyContent = match[2];
 
-    window.onload = type;
-  </script>
+            // Parse YAML-like frontmatter
+            frontmatterText.split('\n').forEach(line => {
+                const colonIndex = line.indexOf(':');
+                if (colonIndex > -1) {
+                    const key = line.substring(0, colonIndex).trim();
+                    const value = line.substring(colonIndex + 1).trim().replace(/^["']|["']$/g, '');
+                    frontmatter[key] = value;
+                }
+            });
+
+            return {
+                frontmatter,
+                content: bodyContent,
+                title: frontmatter.title || 'Untitled',
+                date: frontmatter.date || new Date().toISOString().split('T')[0],
+                excerpt: frontmatter.excerpt || bodyContent.substring(0, 150) + '...'
+            };
+        }
+
+        // Simulate loading blog posts
+        async function loadBlogPosts() {
+            const blogContainer = document.getElementById('blog-container');
+            
+            try {
+                // In a real implementation, you'd fetch the _posts directory
+                // For demo purposes, I'm simulating with sample posts
+                const samplePosts = [
+                    {
+                        filename: 'distributed-systems-lessons.md',
+                        content: `---
+title: "Lessons from Building Distributed Systems at Scale"
+date: "2025-01-15"
+excerpt: "What I learned debugging Kafka clusters at 3 AM"
+---
+
+# Lessons from Building Distributed Systems at Scale
+
+After years of building distributed systems at LinkedIn, AWS, and Amazon, here are the hard-earned lessons that no textbook teaches you.
+
+## The Network is Always Lying
+
+The first rule of distributed systems: assume the network will fail. Not *might* fail - *will* fail.
+
+## Monitoring is Your Best Friend
+
+You can't fix what you can't see. Invest heavily in observability from day one.
+
+## Code Examples
+
+\`\`\`java
+// Always set timeouts
+KafkaConsumer<String, String> consumer = new KafkaConsumer<>(props);
+consumer.poll(Duration.ofMillis(1000));
+\`\`\`
+
+The real magic happens when you combine proper monitoring with circuit breakers and graceful degradation.`
+                    },
+                    {
+                        filename: 'privacy-preserving-analytics.md',
+                        content: `---
+title: "Privacy-Preserving Analytics: Beyond the Hype"
+date: "2025-01-10"
+excerpt: "Differential privacy in production - what works and what doesn't"
+---
+
+# Privacy-Preserving Analytics: Beyond the Hype
+
+Implementing differential privacy at LinkedIn taught me that theory and practice often diverge in fascinating ways.
+
+## The Challenge
+
+How do you provide useful analytics while preserving user privacy? The answer isn't just "add noise."
+
+## Real-World Implementation
+
+\`\`\`scala
+def addLaplaceNoise(value: Double, sensitivity: Double, epsilon: Double): Double = {
+  val scale = sensitivity / epsilon
+  value + laplacian.sample()
+}
+\`\`\`
+
+The devil is in the parameter tuning and understanding your data's sensitivity.`
+                    },
+                    {
+                        filename: 'debugging-kafka.md',
+                        content: `---
+title: "Debugging Kafka: A Field Guide"
+date: "2025-01-05"
+excerpt: "Common Kafka issues and how to actually fix them"
+---
+
+# Debugging Kafka: A Field Guide
+
+Every Kafka engineer has been there: it's 2 AM, messages aren't flowing, and the on-call is paging you.
+
+## Consumer Lag Investigation
+
+First, check your consumer lag:
+\`kafka-consumer-groups.sh --bootstrap-server localhost:9092 --describe --group my-group\`
+
+## Partition Rebalancing Issues
+
+When consumers keep rebalancing, look at:
+- Session timeout configs
+- Max poll interval
+- Processing time per message
+
+The key is understanding *why* rebalancing happens, not just stopping it.`
+                    }
+                ];
+
+                // Simulate network delay
+                await new Promise(resolve => setTimeout(resolve, 1500));
+
+                // Clear loading message
+                blogContainer.innerHTML = '';
+
+                if (samplePosts.length === 0) {
+                    blogContainer.innerHTML = '<div class="error">No blog posts found in _posts directory</div>';
+                    return;
+                }
+
+                samplePosts.forEach((post, index) => {
+                    const parsed = extractFrontmatter(post.content);
+                    const blogPost = document.createElement('div');
+                    blogPost.className = 'blog-post';
+                    blogPost.innerHTML = `
+                        <div class="blog-title" onclick="toggleBlog(${index})">${parsed.title}</div>
+                        <div class="blog-meta">${parsed.date} • ${post.filename}</div>
+                        <div class="blog-excerpt">${parsed.excerpt}</div>
+                        <div class="blog-content" id="blog-content-${index}">
+                            ${parseMarkdown(parsed.content)}
+                        </div>
+                    `;
+                    blogContainer.appendChild(blogPost);
+                });
+
+            } catch (error) {
+                blogContainer.innerHTML = `<div class="error">Error loading blog posts: ${error.message}</div>`;
+            }
+        }
+
+        // Toggle blog post content
+        function toggleBlog(index) {
+            const content = document.getElementById(`blog-content-${index}`);
+            content.classList.toggle('expanded');
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            // Set current date
+            document.getElementById('current-date').textContent = new Date().toISOString().split('T')[0];
+            
+            // Load blog posts
+            loadBlogPosts();
+        });
+    </script>
 </body>
 </html>
