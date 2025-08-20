@@ -1,3 +1,8 @@
+---
+title:  "Replication in Master Slave Architecture"
+date: "2020-04-05"
+excerpt: "Learnings from database replications"
+---
 In a single master and multiple slave architecture
 1. When the client sends a write request the request goes to the master. The master then updates its own replica of database and sends the update to all its followers. The master then sends a response to client that the database has been updated.
 2. Read requests is redirected to any of the node since all the nodes should have same replica. This increases the scalability of the system for read requests.
