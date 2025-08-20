@@ -411,107 +411,38 @@
             };
         }
 
-        // Load blog posts from _posts directory
+        // Load pre-generated blog content (Jekyll-style static generation)
         async function loadBlogPosts() {
             const blogContainer = document.getElementById('blog-container');
             
             try {
-                // Try to fetch the directory listing from GitHub API or similar
-                // For static sites, you'll need to maintain a posts index
-                const posts = await fetchBlogPosts();
-                
-                // Clear loading message
-                blogContainer.innerHTML = '';
-
-                if (posts.length === 0) {
-                    blogContainer.innerHTML = '<div class="error">No blog posts found in _posts directory</div>';
-                    return;
-                }
-
-                // Sort posts by date (newest first)
-                posts.sort((a, b) => new Date(b.date) - new Date(a.date));
-
-                posts.forEach((post, index) => {
-                    const blogPost = document.createElement('div');
-                    blogPost.className = 'blog-post';
-                    blogPost.innerHTML = `
-                        <div class="blog-title" onclick="toggleBlog(${index})">${post.title}</div>
-                        <div class="blog-meta">${post.date} • ${post.filename}</div>
-                        <div class="blog-excerpt">${post.excerpt}</div>
-                        <div class="blog-content" id="blog-content-${index}">
-                            ${parseMarkdown(post.content)}
+                // Load pre-generated blog content
+                const response = await fetch('./blog-content.html');
+                if (response.ok) {
+                    const content = await response.text();
+                    blogContainer.innerHTML = content;
+                } else {
+                    // Fallback: show message to run build script
+                    blogContainer.innerHTML = `
+                        <div class="error">
+                            No pre-generated blog content found.<br><br>
+                            To generate blog posts, run:<br>
+                            <code>node build-blog.js</code><br><br>
+                            This will scan your _posts/ directory and generate static content.
                         </div>
                     `;
-                    blogContainer.appendChild(blogPost);
-                });
-
+                }
             } catch (error) {
-                blogContainer.innerHTML = `<div class="error">Error loading blog posts: ${error.message}</div>`;
+                blogContainer.innerHTML = `
+                    <div class="error">
+                        Blog system requires build step.<br><br>
+                        1. Install Node.js<br>
+                        2. Run: <code>node build-blog.js</code><br>
+                        3. Refresh this page<br><br>
+                        Error: ${error.message}
+                    </div>
+                `;
             }
-        }
-
-        // Fetch blog posts - this will need to be adapted based on your hosting setup
-        async function fetchBlogPosts() {
-            try {
-                // Method 1: If you have a posts.json index file
-                const response = await fetch('./_posts/index.json');
-                if (response.ok) {
-                    const postsIndex = await response.json();
-                    const posts = [];
-                    
-                    for (const filename of postsIndex) {
-                        try {
-                            const postResponse = await fetch(`./_posts/${filename}`);
-                            if (postResponse.ok) {
-                                const content = await postResponse.text();
-                                const parsed = extractFrontmatter(content);
-                                posts.push({
-                                    filename,
-                                    title: parsed.title,
-                                    date: parsed.date,
-                                    excerpt: parsed.excerpt,
-                                    content: parsed.content
-                                });
-                            }
-                        } catch (e) {
-                            console.warn(`Failed to load ${filename}:`, e);
-                        }
-                    }
-                    return posts;
-                }
-            } catch (e) {
-                console.log('No posts index found, trying direct file access...');
-            }
-
-            // Method 2: Try common post filenames (fallback)
-            const commonPosts = [
-                'hello-world.md',
-                'distributed-systems.md',
-                'kafka-debugging.md',
-                'privacy-analytics.md'
-            ];
-
-            const posts = [];
-            for (const filename of commonPosts) {
-                try {
-                    const response = await fetch(`./_posts/${filename}`);
-                    if (response.ok) {
-                        const content = await response.text();
-                        const parsed = extractFrontmatter(content);
-                        posts.push({
-                            filename,
-                            title: parsed.title,
-                            date: parsed.date,
-                            excerpt: parsed.excerpt,
-                            content: parsed.content
-                        });
-                    }
-                } catch (e) {
-                    // File doesn't exist, continue
-                }
-            }
-
-            return posts;
         }
 
         // Toggle blog post content
