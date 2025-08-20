@@ -411,120 +411,35 @@
             };
         }
 
-        // Simulate loading blog posts
+        // Load blog posts from _posts directory
         async function loadBlogPosts() {
             const blogContainer = document.getElementById('blog-container');
             
             try {
-                // In a real implementation, you'd fetch the _posts directory
-                // For demo purposes, I'm simulating with sample posts
-                const samplePosts = [
-                    {
-                        filename: 'distributed-systems-lessons.md',
-                        content: `---
-title: "Lessons from Building Distributed Systems at Scale"
-date: "2025-01-15"
-excerpt: "What I learned debugging Kafka clusters at 3 AM"
----
-
-# Lessons from Building Distributed Systems at Scale
-
-After years of building distributed systems at LinkedIn, AWS, and Amazon, here are the hard-earned lessons that no textbook teaches you.
-
-## The Network is Always Lying
-
-The first rule of distributed systems: assume the network will fail. Not *might* fail - *will* fail.
-
-## Monitoring is Your Best Friend
-
-You can't fix what you can't see. Invest heavily in observability from day one.
-
-## Code Examples
-
-\`\`\`java
-// Always set timeouts
-KafkaConsumer<String, String> consumer = new KafkaConsumer<>(props);
-consumer.poll(Duration.ofMillis(1000));
-\`\`\`
-
-The real magic happens when you combine proper monitoring with circuit breakers and graceful degradation.`
-                    },
-                    {
-                        filename: 'privacy-preserving-analytics.md',
-                        content: `---
-title: "Privacy-Preserving Analytics: Beyond the Hype"
-date: "2025-01-10"
-excerpt: "Differential privacy in production - what works and what doesn't"
----
-
-# Privacy-Preserving Analytics: Beyond the Hype
-
-Implementing differential privacy at LinkedIn taught me that theory and practice often diverge in fascinating ways.
-
-## The Challenge
-
-How do you provide useful analytics while preserving user privacy? The answer isn't just "add noise."
-
-## Real-World Implementation
-
-\`\`\`scala
-def addLaplaceNoise(value: Double, sensitivity: Double, epsilon: Double): Double = {
-  val scale = sensitivity / epsilon
-  value + laplacian.sample()
-}
-\`\`\`
-
-The devil is in the parameter tuning and understanding your data's sensitivity.`
-                    },
-                    {
-                        filename: 'debugging-kafka.md',
-                        content: `---
-title: "Debugging Kafka: A Field Guide"
-date: "2025-01-05"
-excerpt: "Common Kafka issues and how to actually fix them"
----
-
-# Debugging Kafka: A Field Guide
-
-Every Kafka engineer has been there: it's 2 AM, messages aren't flowing, and the on-call is paging you.
-
-## Consumer Lag Investigation
-
-First, check your consumer lag:
-\`kafka-consumer-groups.sh --bootstrap-server localhost:9092 --describe --group my-group\`
-
-## Partition Rebalancing Issues
-
-When consumers keep rebalancing, look at:
-- Session timeout configs
-- Max poll interval
-- Processing time per message
-
-The key is understanding *why* rebalancing happens, not just stopping it.`
-                    }
-                ];
-
-                // Simulate network delay
-                await new Promise(resolve => setTimeout(resolve, 1500));
-
+                // Try to fetch the directory listing from GitHub API or similar
+                // For static sites, you'll need to maintain a posts index
+                const posts = await fetchBlogPosts();
+                
                 // Clear loading message
                 blogContainer.innerHTML = '';
 
-                if (samplePosts.length === 0) {
+                if (posts.length === 0) {
                     blogContainer.innerHTML = '<div class="error">No blog posts found in _posts directory</div>';
                     return;
                 }
 
-                samplePosts.forEach((post, index) => {
-                    const parsed = extractFrontmatter(post.content);
+                // Sort posts by date (newest first)
+                posts.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+                posts.forEach((post, index) => {
                     const blogPost = document.createElement('div');
                     blogPost.className = 'blog-post';
                     blogPost.innerHTML = `
-                        <div class="blog-title" onclick="toggleBlog(${index})">${parsed.title}</div>
-                        <div class="blog-meta">${parsed.date} • ${post.filename}</div>
-                        <div class="blog-excerpt">${parsed.excerpt}</div>
+                        <div class="blog-title" onclick="toggleBlog(${index})">${post.title}</div>
+                        <div class="blog-meta">${post.date} • ${post.filename}</div>
+                        <div class="blog-excerpt">${post.excerpt}</div>
                         <div class="blog-content" id="blog-content-${index}">
-                            ${parseMarkdown(parsed.content)}
+                            ${parseMarkdown(post.content)}
                         </div>
                     `;
                     blogContainer.appendChild(blogPost);
@@ -533,6 +448,70 @@ The key is understanding *why* rebalancing happens, not just stopping it.`
             } catch (error) {
                 blogContainer.innerHTML = `<div class="error">Error loading blog posts: ${error.message}</div>`;
             }
+        }
+
+        // Fetch blog posts - this will need to be adapted based on your hosting setup
+        async function fetchBlogPosts() {
+            try {
+                // Method 1: If you have a posts.json index file
+                const response = await fetch('./_posts/index.json');
+                if (response.ok) {
+                    const postsIndex = await response.json();
+                    const posts = [];
+                    
+                    for (const filename of postsIndex) {
+                        try {
+                            const postResponse = await fetch(`./_posts/${filename}`);
+                            if (postResponse.ok) {
+                                const content = await postResponse.text();
+                                const parsed = extractFrontmatter(content);
+                                posts.push({
+                                    filename,
+                                    title: parsed.title,
+                                    date: parsed.date,
+                                    excerpt: parsed.excerpt,
+                                    content: parsed.content
+                                });
+                            }
+                        } catch (e) {
+                            console.warn(`Failed to load ${filename}:`, e);
+                        }
+                    }
+                    return posts;
+                }
+            } catch (e) {
+                console.log('No posts index found, trying direct file access...');
+            }
+
+            // Method 2: Try common post filenames (fallback)
+            const commonPosts = [
+                'hello-world.md',
+                'distributed-systems.md',
+                'kafka-debugging.md',
+                'privacy-analytics.md'
+            ];
+
+            const posts = [];
+            for (const filename of commonPosts) {
+                try {
+                    const response = await fetch(`./_posts/${filename}`);
+                    if (response.ok) {
+                        const content = await response.text();
+                        const parsed = extractFrontmatter(content);
+                        posts.push({
+                            filename,
+                            title: parsed.title,
+                            date: parsed.date,
+                            excerpt: parsed.excerpt,
+                            content: parsed.content
+                        });
+                    }
+                } catch (e) {
+                    // File doesn't exist, continue
+                }
+            }
+
+            return posts;
         }
 
         // Toggle blog post content
