@@ -140,85 +140,7 @@
             margin-bottom: 2.5rem;
         }
 
-        .blog-section {
-            margin-top: 2rem;
-        }
 
-        .blog-loading {
-            color: var(--muted);
-            font-style: italic;
-        }
-
-        .blog-post {
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            padding: 1rem;
-            margin-bottom: 1rem;
-            background: rgba(110, 118, 129, 0.05);
-            transition: border-color 0.2s ease;
-        }
-
-        .blog-post:hover {
-            border-color: var(--accent);
-        }
-
-        .blog-title {
-            color: var(--accent);
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            cursor: pointer;
-        }
-
-        .blog-meta {
-            color: var(--muted);
-            font-size: 12px;
-            margin-bottom: 0.5rem;
-        }
-
-        .blog-excerpt {
-            color: var(--fg);
-            font-size: 13px;
-        }
-
-        .blog-content {
-            display: none;
-            margin-top: 1rem;
-            padding-top: 1rem;
-            border-top: 1px solid var(--border);
-            font-size: 13px;
-            line-height: 1.6;
-        }
-
-        .blog-content.expanded {
-            display: block;
-        }
-
-        .blog-content h1,
-        .blog-content h2,
-        .blog-content h3 {
-            color: var(--accent);
-            margin: 1rem 0 0.5rem 0;
-        }
-
-        .blog-content p {
-            margin-bottom: 1rem;
-        }
-
-        .blog-content code {
-            background: rgba(110, 118, 129, 0.2);
-            padding: 0.2rem 0.4rem;
-            border-radius: 3px;
-            font-size: 12px;
-        }
-
-        .blog-content pre {
-            background: rgba(110, 118, 129, 0.1);
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            padding: 1rem;
-            overflow-x: auto;
-            margin: 1rem 0;
-        }
 
         .error {
             color: var(--orange);
@@ -339,13 +261,6 @@
             </div>
         </div>
 
-        <div class="section blog-section">
-            <div class="command">$ find ./_posts -name "*.md" -exec head -n 5 {} \;</div>
-            <div class="output" id="blog-container">
-                <div class="blog-loading">Scanning for markdown files...<span class="cursor">█</span></div>
-            </div>
-        </div>
-
         <div class="section">
             <div class="command">$ uptime</div>
             <div class="output">
@@ -355,109 +270,10 @@
     </div>
 
     <script>
-        // Markdown parser (simplified)
-        function parseMarkdown(text) {
-            return text
-                .replace(/^# (.*$)/gim, '<h1>$1</h1>')
-                .replace(/^## (.*$)/gim, '<h2>$1</h2>')
-                .replace(/^### (.*$)/gim, '<h3>$1</h3>')
-                .replace(/^\* (.*$)/gim, '<li>$1</li>')
-                .replace(/^- (.*$)/gim, '<li>$1</li>')
-                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                .replace(/\*(.*?)\*/g, '<em>$1</em>')
-                .replace(/`(.*?)`/g, '<code>$1</code>')
-                .replace(/```[\s\S]*?```/g, function(match) {
-                    const code = match.replace(/```/g, '').trim();
-                    return `<pre><code>${code}</code></pre>`;
-                })
-                .replace(/\n\n/g, '</p><p>')
-                .replace(/^(.+)$/gm, '<p>$1</p>');
-        }
-
-        // Extract frontmatter from markdown
-        function extractFrontmatter(content) {
-            const frontmatterRegex = /^---\n([\s\S]*?)\n---\n([\s\S]*)$/;
-            const match = content.match(frontmatterRegex);
-            
-            if (!match) {
-                return { 
-                    frontmatter: {}, 
-                    content: content,
-                    title: 'Untitled',
-                    date: new Date().toISOString().split('T')[0]
-                };
-            }
-
-            const frontmatter = {};
-            const frontmatterText = match[1];
-            const bodyContent = match[2];
-
-            // Parse YAML-like frontmatter
-            frontmatterText.split('\n').forEach(line => {
-                const colonIndex = line.indexOf(':');
-                if (colonIndex > -1) {
-                    const key = line.substring(0, colonIndex).trim();
-                    const value = line.substring(colonIndex + 1).trim().replace(/^["']|["']$/g, '');
-                    frontmatter[key] = value;
-                }
-            });
-
-            return {
-                frontmatter,
-                content: bodyContent,
-                title: frontmatter.title || 'Untitled',
-                date: frontmatter.date || new Date().toISOString().split('T')[0],
-                excerpt: frontmatter.excerpt || bodyContent.substring(0, 150) + '...'
-            };
-        }
-
-        // Load pre-generated blog content (Jekyll-style static generation)
-        async function loadBlogPosts() {
-            const blogContainer = document.getElementById('blog-container');
-            
-            try {
-                // Load pre-generated blog content
-                const response = await fetch('./blog-content.html');
-                if (response.ok) {
-                    const content = await response.text();
-                    blogContainer.innerHTML = content;
-                } else {
-                    // Fallback: show message to run build script
-                    blogContainer.innerHTML = `
-                        <div class="error">
-                            No pre-generated blog content found.<br><br>
-                            To generate blog posts, run:<br>
-                            <code>node build-blog.js</code><br><br>
-                            This will scan your _posts/ directory and generate static content.
-                        </div>
-                    `;
-                }
-            } catch (error) {
-                blogContainer.innerHTML = `
-                    <div class="error">
-                        Blog system requires build step.<br><br>
-                        1. Install Node.js<br>
-                        2. Run: <code>node build-blog.js</code><br>
-                        3. Refresh this page<br><br>
-                        Error: ${error.message}
-                    </div>
-                `;
-            }
-        }
-
-        // Toggle blog post content
-        function toggleBlog(index) {
-            const content = document.getElementById(`blog-content-${index}`);
-            content.classList.toggle('expanded');
-        }
-
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
             // Set current date
             document.getElementById('current-date').textContent = new Date().toISOString().split('T')[0];
-            
-            // Load blog posts
-            loadBlogPosts();
         });
     </script>
 </body>
